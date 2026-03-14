@@ -1,0 +1,1137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Birthday Divya</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Orbitron:wght@700;900&family=Poppins:wght@400;600;700&display=swap');
+
+body{
+  margin:0;
+  overflow:hidden;
+  background:#000;
+  font-family:'Poppins',sans-serif;
+  color:#fff;
+  cursor:default;
+}
+
+/* ===== MARVEL INTRO ===== */
+#marvel-intro{
+  position:fixed;inset:0;z-index:1000;background:#000;
+  display:flex;flex-direction:column;justify-content:center;align-items:center;
+  overflow:hidden;
+}
+.marvel-flash{
+  position:absolute;inset:0;background:#fff;opacity:0;pointer-events:none;
+}
+.marvel-text-container{
+  perspective:800px;
+  text-align:center;
+}
+.marvel-line{
+  font-family:'Cinzel',serif;
+  font-size:clamp(28px,6vw,72px);
+  font-weight:900;
+  letter-spacing:0.15em;
+  text-transform:uppercase;
+  opacity:0;
+  transform:translateZ(200px) scale(1.8);
+  filter:blur(8px);
+  color:#fff;
+  text-shadow:0 0 40px rgba(255,0,0,0.8),0 0 80px rgba(255,50,0,0.4);
+  transition:none;
+  line-height:1.3;
+}
+.marvel-line.visible{
+  opacity:1;
+  transform:translateZ(0) scale(1);
+  filter:blur(0);
+  transition:all 0.8s cubic-bezier(0.25,0.46,0.45,0.94);
+}
+.marvel-line.zoom-out{
+  opacity:0;
+  transform:translateZ(-500px) scale(0.3);
+  filter:blur(6px);
+  transition:all 0.6s cubic-bezier(0.55,0.085,0.68,0.53);
+}
+.marvel-subtitle{
+  font-family:'Orbitron',sans-serif;
+  font-size:clamp(14px,2.5vw,24px);
+  letter-spacing:0.3em;
+  color:#ff4444;
+  opacity:0;
+  margin-top:20px;
+  text-shadow:0 0 20px rgba(255,0,0,0.6);
+}
+.marvel-subtitle.visible{
+  opacity:1;
+  transition:opacity 1s ease;
+}
+.marvel-particles{
+  position:absolute;inset:0;pointer-events:none;
+}
+.marvel-particle{
+  position:absolute;
+  width:2px;height:2px;
+  background:#ff4444;
+  border-radius:50%;
+  animation:marvel-drift 3s linear infinite;
+}
+@keyframes marvel-drift{
+  0%{opacity:0;transform:translateY(100vh)}
+  10%{opacity:1}
+  90%{opacity:1}
+  100%{opacity:0;transform:translateY(-10vh)}
+}
+.marvel-border{
+  position:absolute;
+  background:linear-gradient(90deg,transparent,#ff4444,transparent);
+  opacity:0;
+}
+.marvel-border.top,.marvel-border.bottom{width:100%;height:2px;}
+.marvel-border.top{top:15%}
+.marvel-border.bottom{bottom:15%}
+.marvel-border.visible{opacity:0.6;transition:opacity 0.5s;}
+
+/* ===== FIREWORKS CANVAS ===== */
+#fireworks-canvas{
+  position:fixed;inset:0;z-index:1;pointer-events:none;
+}
+
+/* ===== STARS BACKGROUND ===== */
+#stars-canvas{
+  position:fixed;inset:0;z-index:0;
+}
+
+/* ===== MAIN CONTENT ===== */
+#main-content{
+  position:relative;z-index:5;
+  display:none;
+  width:100%;height:100vh;
+  overflow-y:auto;overflow-x:hidden;
+}
+.content-wrapper{
+  display:flex;flex-direction:column;align-items:center;
+  padding:30px 20px 120px;
+  min-height:100vh;
+}
+
+/* Title */
+.birthday-title{
+  font-family:'Cinzel',serif;
+  font-size:clamp(32px,6vw,64px);
+  font-weight:900;
+  text-align:center;
+  background:linear-gradient(135deg,#ffd700,#ff6b6b,#ffd700,#ff6b6b);
+  background-size:300% 300%;
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  animation:gradient-shift 4s ease infinite;
+  text-shadow:none;
+  filter:drop-shadow(0 0 20px rgba(255,215,0,0.4));
+  margin-top:20px;
+}
+@keyframes gradient-shift{
+  0%,100%{background-position:0% 50%}
+  50%{background-position:100% 50%}
+}
+
+/* Message */
+.birthday-message{
+  font-size:clamp(16px,2.5vw,22px);
+  line-height:1.8;
+  text-align:center;
+  max-width:600px;
+  margin:15px auto;
+  color:rgba(255,255,255,0.9);
+}
+.highlight{color:#ffd700;font-weight:700;}
+
+/* 3D Cake Container */
+#cake-container{
+  width:clamp(250px,50vw,400px);
+  height:clamp(250px,50vw,400px);
+  margin:20px auto;
+  cursor:grab;
+  border-radius:20px;
+  position:relative;
+}
+#cake-container:active{cursor:grabbing;}
+.cake-label{
+  text-align:center;
+  font-size:14px;
+  color:rgba(255,255,255,0.5);
+  margin-top:5px;
+}
+
+/* Buttons Row */
+.buttons-row{
+  display:flex;gap:15px;flex-wrap:wrap;justify-content:center;
+  margin:20px 0;
+}
+.btn{
+  padding:14px 32px;
+  border:none;border-radius:40px;
+  font-size:16px;font-weight:700;font-family:'Poppins',sans-serif;
+  cursor:pointer;
+  transition:all 0.3s;
+  text-transform:uppercase;
+  letter-spacing:0.05em;
+}
+.btn:hover{transform:scale(1.08);}
+.btn-celebrate{
+  background:linear-gradient(135deg,#ffd700,#ff8c00);
+  color:#000;
+  box-shadow:0 4px 25px rgba(255,215,0,0.4);
+}
+.btn-celebrate:hover{box-shadow:0 6px 35px rgba(255,215,0,0.6);}
+.btn-fireworks{
+  background:linear-gradient(135deg,#ff4444,#ff0066);
+  color:#fff;
+  box-shadow:0 4px 25px rgba(255,0,102,0.4);
+}
+.btn-fireworks:hover{box-shadow:0 6px 35px rgba(255,0,102,0.6);}
+.btn-game{
+  background:linear-gradient(135deg,#00c6ff,#0072ff);
+  color:#fff;
+  box-shadow:0 4px 25px rgba(0,114,255,0.4);
+}
+.btn-game:hover{box-shadow:0 6px 35px rgba(0,114,255,0.6);}
+
+/* Spotify Embed */
+.spotify-section{
+  margin:25px 0;
+  text-align:center;
+}
+.spotify-section h3{
+  font-family:'Orbitron',sans-serif;
+  font-size:16px;
+  letter-spacing:0.1em;
+  color:#1db954;
+  margin-bottom:12px;
+}
+.spotify-embed{
+  border-radius:16px;
+  overflow:hidden;
+  display:inline-block;
+  box-shadow:0 4px 30px rgba(29,185,84,0.2);
+}
+
+/* ===== GAME OVERLAY ===== */
+#game-overlay{
+  position:fixed;inset:0;z-index:50;
+  display:none;
+  background:rgba(0,0,0,0.85);
+  backdrop-filter:blur(5px);
+}
+#game-canvas{
+  position:absolute;inset:0;
+}
+.game-hud{
+  position:absolute;top:0;left:0;right:0;
+  padding:15px 20px;
+  display:flex;justify-content:space-between;align-items:center;
+  background:linear-gradient(180deg,rgba(0,0,0,0.7),transparent);
+  z-index:51;
+  pointer-events:none;
+}
+.game-hud>*{pointer-events:auto;}
+.game-score{
+  font-family:'Orbitron',sans-serif;
+  font-size:clamp(18px,3vw,28px);
+  color:#ffd700;
+  text-shadow:0 0 10px rgba(255,215,0,0.5);
+}
+.game-timer{
+  font-family:'Orbitron',sans-serif;
+  font-size:clamp(16px,2.5vw,24px);
+  color:#ff4444;
+}
+.game-combo{
+  font-family:'Orbitron',sans-serif;
+  font-size:clamp(14px,2vw,20px);
+  color:#00ff88;
+  opacity:0;
+  transition:opacity 0.3s;
+}
+.game-combo.active{opacity:1;}
+.btn-close-game{
+  position:absolute;top:15px;right:15px;z-index:52;
+  background:rgba(255,255,255,0.15);
+  border:1px solid rgba(255,255,255,0.3);
+  color:#fff;border-radius:50%;
+  width:40px;height:40px;font-size:20px;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;
+  transition:all 0.3s;
+}
+.btn-close-game:hover{background:rgba(255,0,0,0.4);}
+
+/* Game Over Screen */
+#game-over{
+  position:absolute;inset:0;z-index:53;
+  display:none;
+  flex-direction:column;align-items:center;justify-content:center;
+  background:rgba(0,0,0,0.9);
+}
+#game-over h2{
+  font-family:'Cinzel',serif;
+  font-size:clamp(36px,7vw,64px);
+  background:linear-gradient(135deg,#ffd700,#ff6b6b);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  margin-bottom:10px;
+}
+#game-over .final-score{
+  font-family:'Orbitron',sans-serif;
+  font-size:clamp(24px,4vw,40px);
+  color:#ffd700;margin-bottom:30px;
+}
+#game-over .btn{margin:10px;}
+
+/* Floating Score Popup */
+.score-popup{
+  position:absolute;
+  font-family:'Orbitron',sans-serif;
+  font-weight:700;
+  font-size:24px;
+  color:#ffd700;
+  pointer-events:none;
+  z-index:55;
+  animation:score-float 1s ease-out forwards;
+  text-shadow:0 0 10px rgba(255,215,0,0.6);
+}
+@keyframes score-float{
+  0%{opacity:1;transform:translateY(0) scale(1)}
+  100%{opacity:0;transform:translateY(-80px) scale(1.5)}
+}
+
+/* Balloons */
+.balloon{
+  position:fixed;bottom:-150px;
+  width:50px;height:65px;
+  border-radius:50%;
+  z-index:4;
+  animation:balloon-float linear forwards;
+}
+@keyframes balloon-float{
+  0%{transform:translateY(0) rotate(0deg)}
+  100%{transform:translateY(-120vh) rotate(20deg)}
+}
+
+/* Screen shake */
+@keyframes shake{
+  0%,100%{transform:translate(0)}
+  25%{transform:translate(-5px,5px)}
+  50%{transform:translate(5px,-5px)}
+  75%{transform:translate(-3px,-3px)}
+}
+.shake{animation:shake 0.3s ease;}
+</style>
+</head>
+<body>
+
+<!-- MARVEL CINEMATIC INTRO -->
+<div id="marvel-intro">
+  <div class="marvel-particles" id="marvel-particles"></div>
+  <div class="marvel-border top" id="marvel-border-top"></div>
+  <div class="marvel-border bottom" id="marvel-border-bottom"></div>
+  <div class="marvel-flash" id="marvel-flash"></div>
+  <div class="marvel-text-container">
+    <div class="marvel-line" id="ml1">From The Universe</div>
+    <div class="marvel-line" id="ml2">That Celebrates You</div>
+    <div class="marvel-line" id="ml3" style="color:#ffd700;text-shadow:0 0 40px rgba(255,215,0,0.8),0 0 80px rgba(255,215,0,0.4);">Happy Birthday</div>
+    <div class="marvel-line" id="ml4" style="font-size:clamp(40px,8vw,96px);color:#ffd700;text-shadow:0 0 60px rgba(255,215,0,0.9),0 0 120px rgba(255,215,0,0.5);">DIVYA</div>
+    <div class="marvel-subtitle" id="marvel-sub">A CINEMATIC BIRTHDAY EXPERIENCE</div>
+  </div>
+</div>
+
+<!-- FIREWORKS CANVAS -->
+<canvas id="fireworks-canvas"></canvas>
+
+<!-- STARS BACKGROUND -->
+<canvas id="stars-canvas"></canvas>
+
+<!-- MAIN CONTENT -->
+<div id="main-content">
+  <div class="content-wrapper">
+    <h1 class="birthday-title">&#10024; Happy Birthday Divya &#10024;</h1>
+    <p class="birthday-message">
+      Wishing you a day filled with <span class="highlight">love</span>,
+      <span class="highlight">joy</span>, and all the <span class="highlight">happiness</span> you deserve!
+      May this year bring you <span class="highlight">endless adventures</span> and <span class="highlight">beautiful moments</span>.
+    </p>
+
+    <div id="cake-container"></div>
+    <p class="cake-label">Drag to rotate the cake</p>
+
+    <div class="buttons-row">
+      <button class="btn btn-celebrate" onclick="launchCelebration()">&#127881; Celebrate!</button>
+      <button class="btn btn-fireworks" onclick="launchFireworksShow()">&#127878; Fireworks Show</button>
+      <button class="btn btn-game" onclick="startGame()">&#127918; Play Birthday Game</button>
+    </div>
+
+    <div class="spotify-section">
+      <h3>&#127925; Birthday Playlist</h3>
+      <div class="spotify-embed">
+        <iframe
+          style="border-radius:12px"
+          src="https://open.spotify.com/embed/playlist/37i9dQZF1DXdyjMX5o2vCq?utm_source=generator&theme=0"
+          width="352" height="152"
+          frameBorder="0"
+          allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+          loading="lazy"
+          title="Spotify Birthday Playlist">
+        </iframe>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- GAME OVERLAY -->
+<div id="game-overlay">
+  <canvas id="game-canvas"></canvas>
+  <div class="game-hud">
+    <div class="game-score">Score: <span id="g-score">0</span></div>
+    <div class="game-combo" id="g-combo">COMBO x2!</div>
+    <div class="game-timer">Time: <span id="g-timer">30</span>s</div>
+  </div>
+  <button class="btn-close-game" onclick="endGame()" title="Close game">&times;</button>
+  <div id="game-over">
+    <h2>Game Over!</h2>
+    <div class="final-score">Score: <span id="final-score">0</span></div>
+    <button class="btn btn-game" onclick="startGame()">&#127918; Play Again</button>
+    <button class="btn btn-celebrate" onclick="endGame()">&#127881; Back to Party</button>
+  </div>
+</div>
+
+<!-- THREE.JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+<script>
+// ===========================
+// STARS BACKGROUND
+// ===========================
+(function(){
+  const c=document.getElementById('stars-canvas');
+  const ctx=c.getContext('2d');
+  let stars=[];
+  function resize(){c.width=innerWidth;c.height=innerHeight;}
+  resize();
+  addEventListener('resize',resize);
+  for(let i=0;i<200;i++){
+    stars.push({x:Math.random()*innerWidth,y:Math.random()*innerHeight,r:Math.random()*1.5+0.5,s:Math.random()*0.5+0.1,b:Math.random()});
+  }
+  function draw(){
+    ctx.clearRect(0,0,c.width,c.height);
+    stars.forEach(s=>{
+      s.b+=0.02;
+      const a=0.4+0.6*Math.abs(Math.sin(s.b));
+      ctx.beginPath();
+      ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
+      ctx.fillStyle=`rgba(255,255,255,${a})`;
+      ctx.fill();
+      s.y+=s.s;
+      if(s.y>c.height){s.y=0;s.x=Math.random()*c.width;}
+    });
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+// ===========================
+// FIREWORKS ENGINE
+// ===========================
+const fwCanvas=document.getElementById('fireworks-canvas');
+const fwCtx=fwCanvas.getContext('2d');
+let fwParticles=[];
+let fwRockets=[];
+let fwRunning=false;
+let fwShowMode=false;
+let fwShowTimer=0;
+
+function fwResize(){fwCanvas.width=innerWidth;fwCanvas.height=innerHeight;}
+fwResize();
+addEventListener('resize',fwResize);
+
+class FWParticle{
+  constructor(x,y,color,vel,size,life){
+    this.x=x;this.y=y;this.color=color;
+    this.vx=vel.x;this.vy=vel.y;
+    this.size=size||3;
+    this.life=life||1;
+    this.decay=0.01+Math.random()*0.02;
+    this.gravity=0.03;
+    this.trail=[];
+  }
+  update(){
+    this.trail.push({x:this.x,y:this.y,life:this.life});
+    if(this.trail.length>6)this.trail.shift();
+    this.x+=this.vx;
+    this.y+=this.vy;
+    this.vy+=this.gravity;
+    this.vx*=0.99;
+    this.life-=this.decay;
+  }
+  draw(ctx){
+    // Trail
+    this.trail.forEach((t,i)=>{
+      ctx.beginPath();
+      ctx.arc(t.x,t.y,this.size*(i/this.trail.length)*t.life,0,Math.PI*2);
+      ctx.fillStyle=this.color.replace('1)',`${t.life*0.3})`);
+      ctx.fill();
+    });
+    // Head
+    ctx.beginPath();
+    ctx.arc(this.x,this.y,this.size*this.life,0,Math.PI*2);
+    ctx.fillStyle=this.color.replace('1)',`${this.life})`);
+    ctx.fill();
+    // Glow
+    ctx.beginPath();
+    ctx.arc(this.x,this.y,this.size*2*this.life,0,Math.PI*2);
+    ctx.fillStyle=this.color.replace('1)',`${this.life*0.2})`);
+    ctx.fill();
+  }
+}
+
+class FWRocket{
+  constructor(x,targetY){
+    this.x=x;
+    this.y=fwCanvas.height;
+    this.targetY=targetY;
+    this.vy=-8-Math.random()*4;
+    this.vx=(Math.random()-0.5)*2;
+    this.trail=[];
+    this.alive=true;
+    this.hue=Math.random()*360;
+  }
+  update(){
+    this.trail.push({x:this.x,y:this.y});
+    if(this.trail.length>12)this.trail.shift();
+    this.x+=this.vx;
+    this.y+=this.vy;
+    this.vy+=0.06;
+    if(this.vy>-1||this.y<=this.targetY){
+      this.alive=false;
+      explodeFirework(this.x,this.y,this.hue);
+    }
+  }
+  draw(ctx){
+    this.trail.forEach((t,i)=>{
+      const a=(i/this.trail.length)*0.5;
+      ctx.beginPath();
+      ctx.arc(t.x,t.y,2,0,Math.PI*2);
+      ctx.fillStyle=`rgba(255,200,100,${a})`;
+      ctx.fill();
+    });
+    ctx.beginPath();
+    ctx.arc(this.x,this.y,3,0,Math.PI*2);
+    ctx.fillStyle='rgba(255,220,150,1)';
+    ctx.fill();
+  }
+}
+
+function explodeFirework(x,y,hue){
+  const patterns=['circle','ring','star','double'];
+  const pattern=patterns[Math.floor(Math.random()*patterns.length)];
+  const count=pattern==='double'?120:60+Math.floor(Math.random()*40);
+  const baseColor=`hsla(${hue},100%,65%,1)`;
+  const altColor=`hsla(${(hue+40)%360},100%,70%,1)`;
+
+  for(let i=0;i<count;i++){
+    let angle,speed,color,size;
+    switch(pattern){
+      case 'circle':
+        angle=Math.random()*Math.PI*2;
+        speed=2+Math.random()*4;
+        color=Math.random()>0.3?baseColor:altColor;
+        size=2+Math.random()*2;
+        break;
+      case 'ring':
+        angle=(i/count)*Math.PI*2;
+        speed=3+Math.random()*1.5;
+        color=baseColor;
+        size=2.5;
+        break;
+      case 'star':
+        angle=(i/count)*Math.PI*2;
+        speed=(i%5===0)?5+Math.random()*2:2+Math.random()*2;
+        color=i%5===0?`hsla(50,100%,80%,1)`:baseColor;
+        size=i%5===0?3:2;
+        break;
+      case 'double':
+        angle=Math.random()*Math.PI*2;
+        speed=i<60?2+Math.random()*3:4+Math.random()*3;
+        color=i<60?baseColor:altColor;
+        size=2+Math.random()*2;
+        break;
+    }
+    fwParticles.push(new FWParticle(x,y,color,{x:Math.cos(angle)*speed,y:Math.sin(angle)*speed},size));
+  }
+}
+
+function launchRocket(){
+  const x=Math.random()*fwCanvas.width*0.8+fwCanvas.width*0.1;
+  const targetY=fwCanvas.height*0.1+Math.random()*fwCanvas.height*0.35;
+  fwRockets.push(new FWRocket(x,targetY));
+}
+
+function fwLoop(){
+  if(!fwRunning)return;
+  fwCtx.globalCompositeOperation='source-over';
+  fwCtx.fillStyle='rgba(0,0,0,0.15)';
+  fwCtx.fillRect(0,0,fwCanvas.width,fwCanvas.height);
+  fwCtx.globalCompositeOperation='lighter';
+
+  // Update rockets
+  fwRockets=fwRockets.filter(r=>{
+    r.update();
+    r.draw(fwCtx);
+    return r.alive;
+  });
+
+  // Update particles
+  fwParticles=fwParticles.filter(p=>{
+    p.update();
+    p.draw(fwCtx);
+    return p.life>0;
+  });
+
+  // Show mode: auto-launch
+  if(fwShowMode){
+    fwShowTimer++;
+    if(fwShowTimer%15===0)launchRocket();
+    if(fwShowTimer%25===0)launchRocket();
+    if(fwShowTimer>600){fwShowMode=false;} // ~10 seconds
+  }
+
+  // When all fireworks are done, clear the canvas to transparent and stop
+  if(!fwShowMode && fwRockets.length===0 && fwParticles.length===0){
+    fwCtx.globalCompositeOperation='source-over';
+    fwCtx.clearRect(0,0,fwCanvas.width,fwCanvas.height);
+    fwRunning=false;
+    return;
+  }
+
+  requestAnimationFrame(fwLoop);
+}
+
+function startFWEngine(){
+  if(!fwRunning){fwRunning=true;fwLoop();}
+}
+
+function launchFireworksShow(){
+  startFWEngine();
+  fwShowMode=true;
+  fwShowTimer=0;
+  // Immediate burst
+  for(let i=0;i<5;i++){setTimeout(()=>launchRocket(),i*200);}
+}
+
+// Click to launch firework
+fwCanvas.style.pointerEvents='none';
+
+// ===========================
+// MARVEL INTRO
+// ===========================
+(function(){
+  // Create rising particles
+  const pc=document.getElementById('marvel-particles');
+  for(let i=0;i<40;i++){
+    const p=document.createElement('div');
+    p.className='marvel-particle';
+    p.style.left=Math.random()*100+'%';
+    p.style.animationDelay=Math.random()*3+'s';
+    p.style.animationDuration=(2+Math.random()*3)+'s';
+    p.style.opacity=Math.random()*0.5+0.2;
+    pc.appendChild(p);
+  }
+
+  const timeline=[
+    {t:500,  fn:()=>{document.getElementById('marvel-border-top').classList.add('visible');document.getElementById('marvel-border-bottom').classList.add('visible');}},
+    {t:1000, fn:()=>{flash(0.6,200);document.getElementById('ml1').classList.add('visible');}},
+    {t:2200, fn:()=>{flash(0.6,200);document.getElementById('ml2').classList.add('visible');}},
+    {t:3800, fn:()=>{
+      document.getElementById('ml1').classList.add('zoom-out');
+      document.getElementById('ml2').classList.add('zoom-out');
+    }},
+    {t:4400, fn:()=>{
+      document.getElementById('ml1').style.display='none';
+      document.getElementById('ml2').style.display='none';
+      flash(0.8,300);
+      document.getElementById('ml3').classList.add('visible');
+    }},
+    {t:5600, fn:()=>{flash(1,400);document.getElementById('ml4').classList.add('visible');}},
+    {t:6800, fn:()=>{document.getElementById('marvel-sub').classList.add('visible');}},
+    {t:8500, fn:()=>{
+      // Zoom everything out
+      document.getElementById('ml3').classList.add('zoom-out');
+      document.getElementById('ml4').classList.add('zoom-out');
+      document.getElementById('marvel-sub').style.opacity='0';
+      document.getElementById('marvel-sub').style.transition='opacity 0.5s';
+    }},
+    {t:9200, fn:()=>{
+      flash(1,500);
+      const intro=document.getElementById('marvel-intro');
+      intro.style.transition='opacity 0.8s';
+      intro.style.opacity='0';
+      setTimeout(()=>{
+        intro.style.display='none';
+        document.getElementById('main-content').style.display='block';
+        startFWEngine();
+        // Welcome fireworks
+        for(let i=0;i<8;i++){setTimeout(()=>launchRocket(),i*300);}
+      },800);
+    }}
+  ];
+
+  timeline.forEach(e=>setTimeout(e.fn,e.t));
+
+  function flash(intensity,duration){
+    const f=document.getElementById('marvel-flash');
+    f.style.transition=`opacity ${duration/2}ms`;
+    f.style.opacity=intensity;
+    setTimeout(()=>{f.style.opacity='0';},duration/2);
+  }
+})();
+
+// ===========================
+// 3D WEBGL CAKE (Three.js)
+// ===========================
+(function(){
+  const container=document.getElementById('cake-container');
+  const scene=new THREE.Scene();
+  const camera=new THREE.PerspectiveCamera(45,1,0.1,1000);
+  camera.position.set(0,3,7);
+  camera.lookAt(0,1.2,0);
+
+  const renderer=new THREE.WebGLRenderer({alpha:true,antialias:true});
+  renderer.setSize(400,400);
+  renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+  renderer.shadowMap.enabled=true;
+  container.appendChild(renderer.domElement);
+
+  // Responsive
+  function resizeCake(){
+    const w=Math.min(400,innerWidth-40);
+    renderer.setSize(w,w);
+    container.style.width=w+'px';
+    container.style.height=w+'px';
+  }
+  resizeCake();
+  addEventListener('resize',resizeCake);
+
+  // Lights
+  const ambientLight=new THREE.AmbientLight(0xffffff,0.5);
+  scene.add(ambientLight);
+  const pointLight=new THREE.PointLight(0xffaa00,1.5,20);
+  pointLight.position.set(0,5,3);
+  pointLight.castShadow=true;
+  scene.add(pointLight);
+  const rimLight=new THREE.PointLight(0xff66aa,0.8,15);
+  rimLight.position.set(-3,3,-2);
+  scene.add(rimLight);
+
+  // Plate
+  const plateGeo=new THREE.CylinderGeometry(2.5,2.5,0.15,64);
+  const plateMat=new THREE.MeshStandardMaterial({color:0xffffff,metalness:0.6,roughness:0.2});
+  const plate=new THREE.Mesh(plateGeo,plateMat);
+  plate.position.y=-0.1;
+  plate.receiveShadow=true;
+  scene.add(plate);
+
+  // Bottom layer
+  const layer1Geo=new THREE.CylinderGeometry(2,2.1,1.2,64);
+  const layer1Mat=new THREE.MeshStandardMaterial({color:0xff8899,roughness:0.6,metalness:0.1});
+  const layer1=new THREE.Mesh(layer1Geo,layer1Mat);
+  layer1.position.y=0.6;
+  layer1.castShadow=true;
+  scene.add(layer1);
+
+  // Middle layer
+  const layer2Geo=new THREE.CylinderGeometry(1.5,1.6,1,64);
+  const layer2Mat=new THREE.MeshStandardMaterial({color:0xffaacc,roughness:0.6,metalness:0.1});
+  const layer2=new THREE.Mesh(layer2Geo,layer2Mat);
+  layer2.position.y=1.7;
+  layer2.castShadow=true;
+  scene.add(layer2);
+
+  // Top layer
+  const layer3Geo=new THREE.CylinderGeometry(1,1.1,0.8,64);
+  const layer3Mat=new THREE.MeshStandardMaterial({color:0xffccdd,roughness:0.5,metalness:0.1});
+  const layer3=new THREE.Mesh(layer3Geo,layer3Mat);
+  layer3.position.y=2.6;
+  layer3.castShadow=true;
+  scene.add(layer3);
+
+  // Frosting drips
+  function addFrosting(baseY,radius,count,color){
+    for(let i=0;i<count;i++){
+      const angle=(i/count)*Math.PI*2;
+      const dripGeo=new THREE.SphereGeometry(0.12,8,8);
+      dripGeo.scale(1,1.5+Math.random(),1);
+      const dripMat=new THREE.MeshStandardMaterial({color:color,roughness:0.3,metalness:0.1});
+      const drip=new THREE.Mesh(dripGeo,dripMat);
+      drip.position.set(
+        Math.cos(angle)*radius,
+        baseY-0.1-Math.random()*0.3,
+        Math.sin(angle)*radius
+      );
+      scene.add(drip);
+    }
+  }
+  addFrosting(1.2,2,12,0xffffff);
+  addFrosting(2.2,1.5,10,0xffe0f0);
+  addFrosting(3.0,1.0,8,0xffffff);
+
+  // Top cream swirl
+  const swirlGeo=new THREE.TorusGeometry(0.4,0.12,8,32);
+  const swirlMat=new THREE.MeshStandardMaterial({color:0xffffff,roughness:0.3});
+  const swirl=new THREE.Mesh(swirlGeo,swirlMat);
+  swirl.position.y=3.05;
+  swirl.rotation.x=Math.PI/2;
+  scene.add(swirl);
+
+  // Candles
+  const candlePositions=[{x:0,z:0},{x:0.5,z:0.3},{x:-0.5,z:0.3},{x:0.3,z:-0.4},{x:-0.3,z:-0.4}];
+  const candleGroup=new THREE.Group();
+  const flameLights=[];
+  candlePositions.forEach((pos,idx)=>{
+    const colors=[0xff6666,0x66aaff,0xffff66,0x66ff66,0xff66ff];
+    // Candle stick
+    const cGeo=new THREE.CylinderGeometry(0.06,0.06,0.6,8);
+    const cMat=new THREE.MeshStandardMaterial({color:colors[idx],roughness:0.4});
+    const candle=new THREE.Mesh(cGeo,cMat);
+    candle.position.set(pos.x,3.3,pos.z);
+    candleGroup.add(candle);
+
+    // Flame (elongated sphere)
+    const flameGeo=new THREE.SphereGeometry(0.06,8,8);
+    flameGeo.scale(1,2,1);
+    const flameMat=new THREE.MeshBasicMaterial({color:0xffaa00});
+    const flame=new THREE.Mesh(flameGeo,flameMat);
+    flame.position.set(pos.x,3.7,pos.z);
+    candleGroup.add(flame);
+
+    // Flame glow
+    const glowGeo=new THREE.SphereGeometry(0.15,8,8);
+    const glowMat=new THREE.MeshBasicMaterial({color:0xffcc00,transparent:true,opacity:0.3});
+    const glow=new THREE.Mesh(glowGeo,glowMat);
+    glow.position.set(pos.x,3.7,pos.z);
+    candleGroup.add(glow);
+
+    flameLights.push({flame,glow,baseY:3.7,offset:Math.random()*Math.PI*2});
+  });
+  scene.add(candleGroup);
+
+  // Cherry on top
+  const cherryGeo=new THREE.SphereGeometry(0.18,16,16);
+  const cherryMat=new THREE.MeshStandardMaterial({color:0xff0033,roughness:0.3,metalness:0.3});
+  const cherry=new THREE.Mesh(cherryGeo,cherryMat);
+  cherry.position.y=3.25;
+  scene.add(cherry);
+
+  // Decorative dots on layers
+  function addDots(y,radius,count,color){
+    for(let i=0;i<count;i++){
+      const angle=(i/count)*Math.PI*2;
+      const dotGeo=new THREE.SphereGeometry(0.06,8,8);
+      const dotMat=new THREE.MeshStandardMaterial({color:color,roughness:0.3,metalness:0.2});
+      const dot=new THREE.Mesh(dotGeo,dotMat);
+      dot.position.set(Math.cos(angle)*radius,y,Math.sin(angle)*radius);
+      scene.add(dot);
+    }
+  }
+  addDots(0.6,2.05,16,0xffd700);
+  addDots(1.7,1.55,12,0xff66aa);
+  addDots(2.6,1.05,8,0xffd700);
+
+  // Drag rotation
+  let isDragging=false;
+  let prevX=0;
+  let rotY=0;
+  let autoRotate=true;
+  const el=renderer.domElement;
+
+  el.addEventListener('pointerdown',e=>{isDragging=true;prevX=e.clientX;autoRotate=false;});
+  addEventListener('pointermove',e=>{
+    if(!isDragging)return;
+    const dx=e.clientX-prevX;
+    rotY+=dx*0.01;
+    prevX=e.clientX;
+  });
+  addEventListener('pointerup',()=>{isDragging=false;setTimeout(()=>{autoRotate=true;},3000);});
+
+  // Animation
+  let time=0;
+  function animate(){
+    requestAnimationFrame(animate);
+    time+=0.016;
+
+    if(autoRotate)rotY+=0.005;
+
+    // Rotate entire scene around cake
+    scene.rotation.y=rotY;
+
+    // Animate flames
+    flameLights.forEach(fl=>{
+      const flicker=Math.sin(time*8+fl.offset)*0.04;
+      fl.flame.position.y=fl.baseY+flicker;
+      fl.flame.scale.x=1+Math.sin(time*10+fl.offset)*0.2;
+      fl.flame.scale.z=1+Math.cos(time*10+fl.offset)*0.2;
+      fl.glow.scale.setScalar(1+Math.sin(time*6+fl.offset)*0.3);
+    });
+
+    // Subtle light animation
+    pointLight.intensity=1.5+Math.sin(time*3)*0.3;
+
+    renderer.render(scene,camera);
+  }
+  animate();
+})();
+
+// ===========================
+// CELEBRATION (Balloons)
+// ===========================
+function launchCelebration(){
+  // Balloons
+  for(let i=0;i<30;i++){
+    setTimeout(()=>{
+      const b=document.createElement('div');
+      b.className='balloon';
+      b.style.left=Math.random()*100+'%';
+      b.style.background=`hsl(${Math.random()*360},75%,60%)`;
+      b.style.animationDuration=(4+Math.random()*4)+'s';
+      b.style.width=(40+Math.random()*25)+'px';
+      b.style.height=(55+Math.random()*25)+'px';
+      b.style.opacity=0.8+Math.random()*0.2;
+      document.body.appendChild(b);
+      setTimeout(()=>b.remove(),9000);
+    },i*80);
+  }
+  // Also launch fireworks
+  startFWEngine();
+  for(let i=0;i<6;i++){setTimeout(()=>launchRocket(),i*400);}
+}
+
+// ===========================
+// BIRTHDAY GAME
+// ===========================
+let gameActive=false;
+let gameScore=0;
+let gameTime=30;
+let gameCombo=0;
+let gameInterval=null;
+let gameTimerInterval=null;
+let gameItems=[];
+let gameCtx=null;
+let gameCatchAreas=[];
+
+function startGame(){
+  const overlay=document.getElementById('game-overlay');
+  const canvas=document.getElementById('game-canvas');
+  const gameOver=document.getElementById('game-over');
+  overlay.style.display='block';
+  gameOver.style.display='none';
+  canvas.width=innerWidth;
+  canvas.height=innerHeight;
+  gameCtx=canvas.getContext('2d');
+  gameActive=true;
+  gameScore=0;
+  gameTime=30;
+  gameCombo=0;
+  gameItems=[];
+  document.getElementById('g-score').textContent='0';
+  document.getElementById('g-timer').textContent='30';
+  document.getElementById('g-combo').classList.remove('active');
+
+  // Spawn items
+  gameInterval=setInterval(spawnGameItem,600);
+
+  // Timer
+  gameTimerInterval=setInterval(()=>{
+    gameTime--;
+    document.getElementById('g-timer').textContent=gameTime;
+    if(gameTime<=0){
+      gameActive=false;
+      clearInterval(gameInterval);
+      clearInterval(gameTimerInterval);
+      showGameOver();
+    }
+  },1000);
+
+  // Click/tap handler
+  canvas.onclick=handleGameClick;
+  canvas.ontouchstart=e=>{e.preventDefault();handleGameClick(e.touches[0]);};
+
+  gameLoop();
+}
+
+const GAME_EMOJIS=['🎁','🎂','🎈','⭐','🎀','🧁','🍰','🎊','💎','👑'];
+const GAME_POINTS=[10,15,10,20,10,15,15,10,30,50];
+const GAME_SIZES=[40,45,38,35,36,42,42,38,32,36];
+
+function spawnGameItem(){
+  if(!gameActive)return;
+  const idx=Math.floor(Math.random()*GAME_EMOJIS.length);
+  // Rare items less frequent
+  const rarity=idx>=8?Math.random()>0.3:true;
+  if(!rarity)return spawnGameItem();
+
+  gameItems.push({
+    emoji:GAME_EMOJIS[idx],
+    points:GAME_POINTS[idx],
+    x:Math.random()*(innerWidth-60)+30,
+    y:-50,
+    size:GAME_SIZES[idx],
+    speed:2+Math.random()*2+(30-gameTime)*0.05, // speed increases over time
+    rotation:Math.random()*360,
+    rotSpeed:(Math.random()-0.5)*4,
+    alive:true,
+    wobble:Math.random()*Math.PI*2,
+    wobbleSpeed:0.02+Math.random()*0.03
+  });
+}
+
+function handleGameClick(e){
+  if(!gameActive)return;
+  const rect=document.getElementById('game-canvas').getBoundingClientRect();
+  const cx=e.clientX-rect.left;
+  const cy=e.clientY-rect.top;
+
+  let hit=false;
+  // Check from top (newest) for better UX
+  for(let i=gameItems.length-1;i>=0;i--){
+    const item=gameItems[i];
+    if(!item.alive)continue;
+    const dx=cx-item.x;
+    const dy=cy-item.y;
+    if(Math.sqrt(dx*dx+dy*dy)<item.size+10){
+      item.alive=false;
+      hit=true;
+      gameCombo++;
+      const multiplier=Math.min(gameCombo,5);
+      const pts=item.points*multiplier;
+      gameScore+=pts;
+      document.getElementById('g-score').textContent=gameScore;
+
+      // Show combo
+      if(gameCombo>=2){
+        const comboEl=document.getElementById('g-combo');
+        comboEl.textContent=`COMBO x${multiplier}!`;
+        comboEl.classList.add('active');
+      }
+
+      // Floating score popup
+      showScorePopup(item.x,item.y,'+'+pts);
+
+      // Particle burst at catch location
+      createGameBurst(item.x,item.y);
+      break;
+    }
+  }
+  if(!hit){
+    gameCombo=0;
+    document.getElementById('g-combo').classList.remove('active');
+  }
+}
+
+function showScorePopup(x,y,text){
+  const popup=document.createElement('div');
+  popup.className='score-popup';
+  popup.textContent=text;
+  popup.style.left=x+'px';
+  popup.style.top=y+'px';
+  document.getElementById('game-overlay').appendChild(popup);
+  setTimeout(()=>popup.remove(),1000);
+}
+
+let gameBursts=[];
+function createGameBurst(x,y){
+  for(let i=0;i<15;i++){
+    const angle=Math.random()*Math.PI*2;
+    const speed=2+Math.random()*4;
+    gameBursts.push({
+      x,y,
+      vx:Math.cos(angle)*speed,
+      vy:Math.sin(angle)*speed,
+      life:1,
+      color:`hsl(${Math.random()*360},100%,65%)`,
+      size:3+Math.random()*3
+    });
+  }
+}
+
+function gameLoop(){
+  if(!gameActive&&gameItems.length===0){return;}
+  const ctx=gameCtx;
+  if(!ctx)return;
+
+  ctx.clearRect(0,0,innerWidth,innerHeight);
+
+  // Update and draw items
+  gameItems=gameItems.filter(item=>{
+    if(!item.alive)return false;
+    item.y+=item.speed;
+    item.rotation+=item.rotSpeed;
+    item.wobble+=item.wobbleSpeed;
+    item.x+=Math.sin(item.wobble)*0.8;
+
+    if(item.y>innerHeight+60)return false;
+
+    // Draw emoji
+    ctx.save();
+    ctx.translate(item.x,item.y);
+    ctx.rotate(item.rotation*Math.PI/180);
+    ctx.font=item.size+'px serif';
+    ctx.textAlign='center';
+    ctx.textBaseline='middle';
+    // Glow
+    ctx.shadowColor='rgba(255,215,0,0.5)';
+    ctx.shadowBlur=15;
+    ctx.fillText(item.emoji,0,0);
+    ctx.restore();
+    return true;
+  });
+
+  // Update and draw bursts
+  gameBursts=gameBursts.filter(b=>{
+    b.x+=b.vx;
+    b.y+=b.vy;
+    b.vy+=0.1;
+    b.life-=0.03;
+    if(b.life<=0)return false;
+    ctx.beginPath();
+    ctx.arc(b.x,b.y,b.size*b.life,0,Math.PI*2);
+    ctx.fillStyle=b.color;
+    ctx.globalAlpha=b.life;
+    ctx.fill();
+    ctx.globalAlpha=1;
+    return true;
+  });
+
+  requestAnimationFrame(gameLoop);
+}
+
+function showGameOver(){
+  document.getElementById('final-score').textContent=gameScore;
+  document.getElementById('game-over').style.display='flex';
+}
+
+function endGame(){
+  gameActive=false;
+  clearInterval(gameInterval);
+  clearInterval(gameTimerInterval);
+  gameItems=[];
+  gameBursts=[];
+  document.getElementById('game-overlay').style.display='none';
+}
+
+// Handle resize for game
+addEventListener('resize',()=>{
+  const gc=document.getElementById('game-canvas');
+  if(gc){gc.width=innerWidth;gc.height=innerHeight;}
+});
+</script>
+</body>
+</html>
